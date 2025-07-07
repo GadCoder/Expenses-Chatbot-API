@@ -9,6 +9,10 @@ class ExpenseCategoryCreate(ExpenseCategoryBase):
     pass
 
 
+class ExpenseCategoryUpdate(ExpenseCategoryBase):
+    pass
+
+
 class ExpenseCategoryRead(ExpenseCategoryBase):
     id: int
 

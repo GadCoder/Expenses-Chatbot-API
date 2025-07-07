@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .expense import ExpenseRead
 from .expense_category import ExpenseCategoryRead
@@ -7,16 +7,20 @@ from .expense_category import ExpenseCategoryRead
 
 class UserBase(BaseModel):
     chat_id: str
-    name: str
-    bot_name: str
+    name: str | None = Field(default=None)
+    bot_name: str | None = Field(default=None)
 
 
 class UserCreate(UserBase):
     pass
 
 
+class UserUpdate(UserBase):
+    pass
+
+
 class UserRead(UserBase):
-    id: int
+    chat_id: str
     expenses: List[ExpenseRead] = []
     categories: List[ExpenseCategoryRead] = []
 

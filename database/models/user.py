@@ -8,8 +8,8 @@ class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     chat_id = Column(String)
-    name = Column(String)
-    bot_name = Column(String)
+    name = Column(String, nullable=True)
+    bot_name = Column(String, nullable=True)
 
     expenses = relationship(
         "Expense", back_populates="user", cascade="all, delete-orphan"

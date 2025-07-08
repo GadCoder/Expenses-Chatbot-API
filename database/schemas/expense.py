@@ -1,10 +1,12 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from .expense_category import ExpenseCategoryRead
 
 
 class ExpenseBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     description: str
     amount: float
 
@@ -17,6 +19,3 @@ class ExpenseRead(ExpenseBase):
     id: int
     timestamp: datetime
     category: ExpenseCategoryRead
-
-    class Config:
-        orm_mode = True

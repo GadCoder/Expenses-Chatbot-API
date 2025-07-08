@@ -1,11 +1,9 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env")
     gemini_api_key: str
 
-    class Config:
-        env_file = ".env"
 
-
-settings = Settings()
+settings = Settings()  # type: ignore

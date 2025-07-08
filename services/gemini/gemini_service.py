@@ -17,7 +17,6 @@ class GeminiService:
             contents=prompt,
             config=self.config,
         )
-        print(response)
         function_call = response.candidates[0].content.parts[0].function_call  # type: ignore
         if not function_call:
             return None

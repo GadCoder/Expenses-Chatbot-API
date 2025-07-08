@@ -1,9 +1,15 @@
 from fastapi import FastAPI
-from api.routers import whatsapp
+from api.base import api_router
+from database import models
+from database.database import engine, Base
+
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.include_router(whatsapp.router)
+app.include_router(api_router)
+
 
 @app.get("/")
 async def root():

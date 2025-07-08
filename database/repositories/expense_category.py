@@ -8,9 +8,9 @@ from database.schemas.expense_category import (
 
 
 def create_expense_category(
-    db: Session, category: ExpenseCategoryCreate
+    db: Session, category: ExpenseCategoryCreate, user_id: int
 ) -> ExpenseCategory:
-    db_category = ExpenseCategory(category.model_dump())
+    db_category = ExpenseCategory(**category.model_dump(), user_id=user_id)
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
@@ -29,6 +29,10 @@ def get_expense_categories(
     db: Session, skip: int = 0, limit: int = 100
 ) -> list[ExpenseCategory]:
     return db.query(ExpenseCategory).offset(skip).limit(limit).all()
+
+
+def get_user_expense_categories(db: Session, user_id: int) -> list[ExpenseCategory]:
+    return db.query(ExpenseCategory).filter(ExpenseCategory.user_id == user_id).all()
 
 
 def update_expense_category(

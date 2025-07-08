@@ -5,7 +5,7 @@ from database.schemas.expense import ExpenseCreate
 
 
 def create_expense(db: Session, expense: ExpenseCreate, user_id: int) -> Expense:
-    db_expense = Expense(expense.model_dump(), user_id=user_id)
+    db_expense = Expense(**expense.model_dump(), user_id=user_id)
     db.add(db_expense)
     db.commit()
     db.refresh(db_expense)

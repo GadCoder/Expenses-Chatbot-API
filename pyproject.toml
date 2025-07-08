@@ -5,23 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "fastapi",
+    "fastapi[standard]",
     "uvicorn",
     "sqlalchemy",
     "python-dotenv",
     "google-genai",
     "pandas",
     "pydantic-settings>=2.10.1",
-    "black>=25.1.0",
 ]
-[tool.black]
-line-length = 88
-target-version = ["py313"]  # You can use py313 once supported
-skip-string-normalization = false  # Set to true if you want to keep single quotes
-
-
-[tool.ruff]
-line-length = 88
-extend-select = ["E501"]
-# Optional: don't fix long lines (just show warnings)
-ignore = ["E501"]

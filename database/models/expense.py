@@ -11,7 +11,6 @@ class Expense(Base):
     id = Column(Integer, primary_key=True, index=True)
     description = Column(String, index=True)
     amount = Column(Float)
-    category = Column(String, index=True)
     timestamp = Column(DateTime(timezone=True), server_default=func.now())
     user_id = Column(Integer, ForeignKey("users.id"))
     category_id = Column(Integer, ForeignKey("expense_categories.id"))

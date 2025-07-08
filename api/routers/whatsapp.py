@@ -1,39 +1,32 @@
-from fastapi import APIRouter, Request, Response, Depends
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from services.nlp_service import process_message
-from database.database import SessionLocal, engine, Base
+from fastapi import APIRouter, Response, Depends
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+from database.database import get_db
+from services.messages.message_handler import process_message
+
+from services.gemini.gemini_service import GeminiService, get_gemini_service
+
 
 router = APIRouter()
 
 
-# Dependency to get the database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+class RequestPayload(BaseModel):
+    chat_id: str
+    message: str | None
 
 
-@router.post("/webhook")
-async def whatsapp_webhook(request: Request, db: Session = Depends(get_db)):
-    # In a real WhatsApp integration, you would parse the incoming message
-    # from the request body. For now, we'll assume a simple text message.
-    # This part needs to be adapted based on the actual WhatsApp API payload.
-
-    # For demonstration, let's assume the message is in the request body as plain text
-    # or a simple JSON with a 'message' key.
-    try:
-        body = await request.json()
-        message = body.get("message", "")
-    except Exception:
-        message = await request.body()
-        message = message.decode("utf-8")
+@router.post("/process-message")
+async def whatsapp_webhook(
+    request_payload: RequestPayload,
+    db: Session = Depends(get_db),
+    gemini: GeminiService = Depends(get_gemini_service),
+):
+    chat_id = request_payload.chat_id
+    message = request_payload.message
     if not message:
-        return Response(content="No message received", status_code=200)
-
-    response_text = process_message(message, db)
-    return {"reply": response_text}
+        return Response(content="No message received", status_code=400)
+    answer = process_message(chat_id=chat_id, message=message, db=db, gemini=gemini)
+    if not answer:
+        return Response(content="Couldn't process message", status_code=400)
+    return {"reply": answer}

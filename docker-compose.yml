@@ -1,8 +1,9 @@
 services:
-  app:
+  fastapi-api:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: fastapi-api
     restart: always
     ports:
       - "8000:8000"
@@ -16,3 +17,10 @@ services:
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}
+    networks: 
+      - expenses_app_network
+
+
+networks:
+  expenses_app_network:
+    external: true

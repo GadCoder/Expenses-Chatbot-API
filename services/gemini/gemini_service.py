@@ -9,7 +9,7 @@ class GeminiService:
         print("Initializing Gemini Service...")
         self.client: Client = Client(api_key=settings.gemini_api_key)
         tools = types.Tool(function_declarations=get_tools())  # type: ignore
-        self.config = types.GenerateContentConfig(tools=[tools])
+        self.config = types.GenerateContentConfig(tools=[tools])  # type: ignore
 
     def get_function_call(self, prompt: str) -> tuple | None:
         response = self.client.models.generate_content(

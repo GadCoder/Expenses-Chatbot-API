@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
 from database.models.expense import Expense
@@ -17,11 +20,25 @@ def get_expense(db: Session, expense_id: int) -> Expense | None:
 
 
 def get_user_expenses(
-    db: Session, user_id: int, skip: int = 0, limit: int = 100
+    db: Session,
+    user_id: int,
+    start_date: datetime,
+    category_id: int | None = None,
+    skip: int = 0,
+    limit: int = 100,
 ) -> list[Expense]:
+    filters = [
+        Expense.user_id == user_id,
+        Expense.timestamp >= start_date,
+    ]
+
+    if category_id:
+        filters.append(Expense.category_id == category_id)
+
     return (
         db.query(Expense)
-        .filter(Expense.user_id == user_id)
+        .filter(*filters)
+        .order_by(desc(Expense.timestamp))
         .offset(skip)
         .limit(limit)
         .all()

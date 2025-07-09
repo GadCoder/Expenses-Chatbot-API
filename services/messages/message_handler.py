@@ -27,5 +27,5 @@ def process_message(
     function_args["db"] = db
     function_args["user"] = user
     result = function_to_call(**function_args)
-    enriched_answer = enrich_answer(function_name=function_name, answer_data=result)
+    enriched_answer = enrich_answer(function_name=function_name, result=result)
     return enriched_answer

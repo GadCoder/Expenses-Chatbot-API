@@ -8,10 +8,11 @@ dependencies = [
     "fastapi[standard]",
     "uvicorn",
     "sqlalchemy[sqlite]",
-    "psycopg2-binary",
     "python-dotenv",
     "google-genai",
     "pandas",
     "pydantic-settings>=2.10.1",
     "pytest>=8.4.1",
+    "asyncpg>=0.30.0",
+    "psycopg2-binary>=2.9.10",
 ]

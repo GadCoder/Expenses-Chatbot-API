@@ -2,13 +2,13 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Response, Depends
 
+from api.security import get_api_key
 from database.database import get_db
 from services.messages.message_handler import process_message
-
 from services.gemini.gemini_service import GeminiService, get_gemini_service
 
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(get_api_key)])
 
 
 class RequestPayload(BaseModel):

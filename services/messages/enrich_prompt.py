@@ -16,5 +16,4 @@ def enrich_prompt(db: Session, message: str, user_id: int) -> str:
         categories_str = ", ".join([str(c.name) for c in user_categories])
         content = f"""This are the existing expense categories registered for this user:
                     [{categories_str}]"""
-
     return f"{message}\n{content}"

@@ -11,7 +11,7 @@ from database.repositories import (
 )
 
 
-def register_new_expense(
+def register_expense(
     db: Session, description: str, amount: float, category_name: str, user: User
 ) -> dict:
     print("On register expense")
@@ -37,6 +37,6 @@ def register_new_expense(
         expense=expense_data,
         user_id=user.id,  # type: ignore
     )
-    data = registered_expense.__dict__.copy()
-    data["category_name"] = category_name
-    return data
+    result = registered_expense.__dict__.copy()
+    result["category_name"] = category_name
+    return result

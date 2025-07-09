@@ -1,5 +1,3 @@
-from typing import List
-
 template = {
     "name": "",
     "description": "",
@@ -34,7 +32,38 @@ register_expense = {
         "required": ["description", "amount"],
     },
 }
+get_list_of_expenses = {
+    "name": "get_expenses_list",
+    "description": """List the expenses registered by the user.
+        The prompt may include:
+            - A delta time expression to specify the time range for the expenses (e.g., “últimos X días”, “último mes”, “últimas 2 semanas”).
+            - An expense category (e.g., food, transport). This category should be mapped to the user's known or personalized expense categories.
+        Delta time interpretation rules:
+            - "últimos X días" → past X days
+            - "último mes" → past 30 days
+            - "últimas 2 semanas" → past 14 days
+        Equivalences:
+            - 1 month = 30 days
+            - 1 week = 7 days
+        Default behavior:
+            If no delta time is provided, assume a default of 7 days.
+        """,
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "delta_time": {
+                "type": "number",
+                "description": "Number of past days to use as a delta for the expenses registry list. For example, 30, 1, etc",
+            },
+            "category_name": {
+                "type": "string",
+                "description": "Category of the expense. E.g, 'comida', 'entretenimiento', 'gastos fijos'",
+            },
+        },
+        "required": ["delta_time"],
+    },
+}
 
 
 def get_tools():
-    return [register_expense]
+    return [register_expense, get_list_of_expenses]

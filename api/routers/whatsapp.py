@@ -4,7 +4,6 @@ from fastapi import APIRouter, Response, Depends
 
 from database.database import get_db
 from services.messages.message_handler import process_message
-
 from services.gemini.gemini_service import GeminiService, get_gemini_service
 
 

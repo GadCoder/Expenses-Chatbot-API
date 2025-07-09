@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]",
     "uvicorn",
     "sqlalchemy[sqlite]",
+    "psycopg2-binary",
     "python-dotenv",
     "google-genai",
     "pandas",

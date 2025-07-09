@@ -1,0 +1,25 @@
+# Ignore .git directory
+.git
+
+# Ignore Python cache and environment files
+__pycache__/
+.pytest_cache/
+.venv/
+
+# Ignore environment files (sensitive data)
+.env
+.env.*
+
+# Ignore uv lock file (it's copied explicitly)
+uv.lock
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore any local database files if they are not part of the image
+*.db

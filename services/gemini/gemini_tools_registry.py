@@ -6,12 +6,13 @@ template = {
 
 register_expense = {
     "name": "register_expense",
-    "description": """Register an expense given a description, amount and category.
-      If the category is not explicitly set in the prompt, choose one that fits from the category list provided. 
-      If none of the given categories fits the description, create a new one, following the past categories as examples.
-      If there's no given past categories, create a new one following this guidelines:
-      - the category should be in lower case
-      - should be an atomic word or sentence, like 'comida', 'entretenimiento', 'transporte', 'gastos fijos', and in spanish
+    "description": """
+        Register an expense given a description, amount, and category.
+        - If the category is not explicitly provided, choose one that best fits from the list of existing categories.
+        - If none of the existing categories is a good fit, create a new category, using past categories as examples when available.
+        - If no past categories are available, generate a new one following these rules:
+            - The category should be in lowercase.
+            - It should be an atomic word or short phrase in Spanish, such as: "comida", "entretenimiento", "transporte", "gastos fijos".
       """,
     "parameters": {
         "type": "object",
@@ -26,7 +27,7 @@ register_expense = {
             },
             "category_name": {
                 "type": "string",
-                "description": "Category of the expense. E.g, 'comida', 'entretenimiento', 'gastos fijos'",
+                "description": "Optional category for the expense. If not provided, the system will infer or generate one E.g, 'comida', 'entretenimiento', 'gastos fijos'",
             },
         },
         "required": ["description", "amount"],
@@ -39,9 +40,12 @@ get_list_of_expenses = {
             - A delta time expression to specify the time range for the expenses (e.g., “últimos X días”, “último mes”, “últimas 2 semanas”).
             - An expense category (e.g., food, transport). This category should be mapped to the user's known or personalized expense categories.
         Delta time interpretation rules:
-            - "últimos X días" → past X days
-            - "último mes" → past 30 days
-            - "últimas 2 semanas" → past 14 days
+            - 'Ayer' -> 1 day ago
+            - 'Hoy' -> from today, meaning 0 days ago
+            - 'Hace X semanas' -> past X * 7 days
+            - 'últimos X días' → past X days
+            - 'último mes' → past 30 days
+            - 'últimas 2 semanas' → past 14 days
         Equivalences:
             - 1 month = 30 days
             - 1 week = 7 days

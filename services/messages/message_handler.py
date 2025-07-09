@@ -20,7 +20,6 @@ def process_message(
     if not function_call:
         return None
     function_name, function_args = function_call  # type: ignore
-    print(f"Function name: {function_name} Args: {function_args}")
     if function_name not in TOOL_REGISTRY:
         return None
     function_to_call = TOOL_REGISTRY[function_name]

@@ -46,7 +46,11 @@ def format_date(date: datetime) -> str:
 
 
 def enrich_get_expenses_list(result: dict) -> str:
-    base_message = f"Gastos de los últimos {result['delta_time']} días:\n"
+    delta_days = result["delta_time"]
+    if delta_days == 1:
+        base_message = "*Gastos de ayer:*\n"
+    else:
+        base_message = f"Gastos de los últimos {delta_days} días:\n"
     for expense_data in result["expenses"]:
         base_message += format_expense_data(expense_data=expense_data)
     return base_message

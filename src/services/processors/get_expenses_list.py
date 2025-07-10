@@ -1,4 +1,6 @@
+from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta
+
 from sqlalchemy.orm import Session
 
 from database.models.user import User
@@ -11,7 +13,8 @@ from database.repositories import (
 def get_expenses_list(
     db: Session, delta_time: int, user: User, category_name: str | None = None
 ) -> dict:
-    start_date = datetime.now() - timedelta(days=delta_time)
+    start_date = datetime.now(ZoneInfo("America/Lima")) - timedelta(days=delta_time)
+    start_date = start_date.astimezone(ZoneInfo("UTC"))
     category_id = None
     if category_name:
         category = expense_category_repository.get_expense_category_by_name(

@@ -42,14 +42,16 @@ def get_user_expenses(
     if category_id:
         filters.append(Expense.category_id == category_id)
 
-    return (
+    expenses = (
         db.query(Expense)
         .filter(*filters)
-        .order_by(Expense.timestamp)
+        .order_by(desc(Expense.timestamp))
         .offset(skip)
         .limit(limit)
         .all()
     )
+
+    return list(reversed(expenses))
 
 
 def delete_expense(db: Session, expense_id: int) -> Expense | None:

@@ -6,6 +6,7 @@ from api.security import get_api_key
 from database.database import get_db
 from services.messages.message_handler import process_message
 from services.gemini.gemini_service import GeminiService, get_gemini_service
+from core.security import hash_chat_id
 
 
 router = APIRouter(dependencies=[Depends(get_api_key)])
@@ -26,7 +27,8 @@ async def whatsapp_webhook(
     message = request_payload.message
     if not message:
         return Response(content="No message received", status_code=400)
-    answer = process_message(chat_id=chat_id, message=message, db=db, gemini=gemini)
+    hashed_chat_id = hash_chat_id(chat_id)
+    answer = process_message(chat_id=hashed_chat_id, message=message, db=db, gemini=gemini)
     if not answer:
         return Response(content="Couldn't process message", status_code=400)
     return {"reply": answer}

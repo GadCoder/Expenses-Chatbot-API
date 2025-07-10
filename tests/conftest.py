@@ -15,6 +15,7 @@ from database.repositories import (
     user as user_repository,
     expense_category as expense_category_repository,
 )
+from core.security import hash_chat_id
 
 
 @pytest.fixture(scope="function")
@@ -32,7 +33,8 @@ def db_session() -> Session:  # type: ignore
 
 @pytest.fixture
 def user_factory(db_session: Session) -> User:
-    user_data = UserCreate(chat_id="12345")
+    hashed_chat_id = hash_chat_id("12345")
+    user_data = UserCreate(chat_id=hashed_chat_id)
     return user_repository.create_user(db_session, user_data)
 
 

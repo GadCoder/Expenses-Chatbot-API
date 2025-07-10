@@ -11,7 +11,6 @@ from database.repositories import (
 def get_expenses_list(
     db: Session, delta_time: int, user: User, category_name: str | None = None
 ) -> dict:
-    print("On get expenses list")
     start_date = datetime.now() - timedelta(days=delta_time)
     category_id = None
     if category_name:

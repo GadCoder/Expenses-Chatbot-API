@@ -5,6 +5,7 @@ from .tool_registry import register_tool
 from .processors import (
     register_expense as _register_expense,
     get_expenses_list as _get_expenses_list,
+    welcome_message as _welcome_message
 )
 
 
@@ -28,3 +29,9 @@ def get_expenses_list(
     return _get_expenses_list(
         db=db, delta_time=delta_time, user=user, category_name=category_name
     )
+
+
+@register_tool
+def welcome_message(db: Session, user: User):
+    return _welcome_message(db=db, user=user)
+

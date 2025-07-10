@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from api.base import api_router
+
 from database import models
+from api.base import api_router
 from database.database import engine, Base
 
 

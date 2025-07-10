@@ -1,13 +1,13 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo  
 
-def enrich_answer(function_name: str, result: dict | None) -> str:
-    if not result:
+def enrich_answer(function_name: str, answer: dict | None) -> str:
+    if not answer:
         return "No pude procesar tu solicitud :("
     if function_name == "register_expense":
-        return enrich_register_expense(expense_data=result)
+        return enrich_register_expense(expense_data=answer)
     if function_name == "get_expenses_list":
-        return enrich_get_expenses_list(result=result)
+        return enrich_get_expenses_list(result=answer)
     return "No pude procesar tu solicitud :("
 
 

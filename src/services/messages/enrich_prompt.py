@@ -1,8 +1,15 @@
 from sqlalchemy.orm import Session
 from database.repositories.expense_category import get_user_expense_categories
+from database.models.message_history import MessageHistory
 
 
-def enrich_prompt(db: Session, message: str, user_id: int) -> str:
+def enrich_prompt(db: Session, message: str, user_id: int, message_history: list[MessageHistory]) -> str:
+    history_str = ""
+    if message_history:
+        history_str = "Conversation History:\n"
+        for msg in message_history:
+            history_str += f"{msg.sender_type}: {msg.message}\n"
+
     user_categories = get_user_expense_categories(db=db, user_id=user_id)
     if not user_categories:
         content = """Currently, there's no registered expenses categories. 
@@ -20,4 +27,4 @@ def enrich_prompt(db: Session, message: str, user_id: int) -> str:
         categories_str = ", ".join([str(c.name) for c in user_categories])
         content = f"""This are the existing expense categories registered for this user:
                     [{categories_str}]"""
-    return f"{message}\n{content}"
+    return f"{history_str}{message}\n{content}"

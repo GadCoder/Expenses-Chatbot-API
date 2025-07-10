@@ -1,17 +1,22 @@
+import logging
+
 from google.genai import types, Client
 
-from core.config import settings
-from services.gemini.gemini_tools_registry import get_tools
+from src.core.config import settings
+from src.services.gemini.gemini_tools_registry import get_tools
+
+logger = logging.getLogger(__name__)
 
 
 class GeminiService:
     def __init__(self):
-        print("Initializing Gemini Service...")
+        logger.info("Initializing Gemini Service...")
         self.client: Client = Client(api_key=settings.gemini_api_key)
         tools = types.Tool(function_declarations=get_tools())  # type: ignore
         self.config = types.GenerateContentConfig(tools=[tools])  # type: ignore
 
     def get_function_call(self, prompt: str) -> tuple | None:
+        logger.info(f"Sending prompt to Gemini: {prompt}")
         response = self.client.models.generate_content(
             model="gemini-2.5-flash-lite-preview-06-17",
             contents=prompt,
@@ -19,7 +24,9 @@ class GeminiService:
         )
         function_call = response.candidates[0].content.parts[0].function_call  # type: ignore
         if not function_call:
+            logger.warning("No function call returned from Gemini")
             return None
+        logger.info(f"Received function call from Gemini: {function_call.name}")
         return (function_call.name, function_call.args)
 
 

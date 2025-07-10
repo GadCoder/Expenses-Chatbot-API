@@ -11,6 +11,10 @@ def enrich_prompt(db: Session, message: str, user_id: int) -> str:
             - 'comida': anything food or drinks related
             - 'transporte': like bus ticket pricing or taxis
             - 'entretenmiento': anything related to entertaiment
+        - The category should be in lowercase.
+        - It should be an atomic word or short phrase in Spanish, such as: "comida", "entretenimiento", "transporte", "gastos fijos".
+        Careful when defining a a new expense category. Take into account the full sentence for it.
+        For example, 'Comida para mi mascota' at first could seems like 'food', but is actually 'pet'
         """
     else:
         categories_str = ", ".join([str(c.name) for c in user_categories])

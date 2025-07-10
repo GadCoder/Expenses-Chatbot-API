@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from zoneinfo import ZoneInfo  
 
 def enrich_answer(function_name: str, result: dict | None) -> str:
     if not result:
@@ -13,7 +13,7 @@ def enrich_answer(function_name: str, result: dict | None) -> str:
 
 def format_expense_data(expense_data: dict) -> str:
     formated_date = format_date(date=expense_data["timestamp"])
-    return f"\n*{expense_data['description']}* \n💰: S/.{expense_data['amount']} soles \n🏷️ Categoría: {expense_data['category_name']} \n🗓️: {formated_date}\n\n"
+    return f"\n*{expense_data['description'].capitalize()}* \n💰: S/.{expense_data['amount']}\n🏷️ Categoría: {expense_data['category_name']} \n🗓️: {formated_date}\n\n"
 
 
 def enrich_register_expense(expense_data: dict) -> str:
@@ -23,6 +23,7 @@ def enrich_register_expense(expense_data: dict) -> str:
 
 
 def format_date(date: datetime) -> str:
+    date = date.astimezone(ZoneInfo("America/Lima"))
     months = {
         1: "enero",
         2: "febrero",
@@ -47,10 +48,15 @@ def format_date(date: datetime) -> str:
 
 def enrich_get_expenses_list(result: dict) -> str:
     delta_days = result["delta_time"]
-    if delta_days == 1:
-        base_message = "*Gastos de ayer:*\n"
+    expenses = result["expenses"]
+    if not expenses:
+        return '💸 Aún no tienes gastos registrados.\nPuedes empezar diciendo algo como: \n_“Gasté 5 soles en pasajes”_ o _“Compré un pollo a la brasa de 55 soles"_'
+    if delta_days == 0:
+        base_message = "*Gastos registrados hoy:*\n"
+    elif delta_days == 1:
+        base_message = "*Gastos registrados ayer:*\n"
     else:
-        base_message = f"Gastos de los últimos {delta_days} días:\n"
-    for expense_data in result["expenses"]:
-        base_message += format_expense_data(expense_data=expense_data)
+        base_message = f"Gastos registrados en los últimos {delta_days} días:\n"
+    for expense in expenses:
+        base_message += format_expense_data(expense_data=expense)
     return base_message

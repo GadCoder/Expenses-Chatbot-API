@@ -21,4 +21,4 @@ fi
 export ENV_FILE="$ENV_FILE"
 
 echo "Running Docker Compose with $ENV_FILE"
-docker compose --env-file "$ENV_FILE" up --build
+docker compose --env-file "$ENV_FILE" up --build -d

@@ -9,17 +9,15 @@ register_expense = {
     "description": """
         Register an expense given a description, amount, and category.
         - If the category is not explicitly provided, choose one that best fits from the list of existing categories.
-        - If none of the existing categories is a good fit, create a new category, using past categories as examples when available.
-        - If no past categories are available, generate a new one following these rules:
-            - The category should be in lowercase.
-            - It should be an atomic word or short phrase in Spanish, such as: "comida", "entretenimiento", "transporte", "gastos fijos".
+        -  Careful when choosing the expense category. Take into account the full sentence for it.
+        For example, 'Comida para mi mascota' at first could seems like 'food', but is actually 'pet'
       """,
     "parameters": {
         "type": "object",
         "properties": {
             "description": {
                 "type": "string",
-                "description": "Description of the expense. For example, 'Gasté 5 soles en pasaje para ir a mi trabajo', 'Compré un almuerzo que costó 25 soles'",
+                "description": "Description of the expense. For example, 'Gasté 5 soles en pasaje para ir a mi trabajo', 'Compré un almuerzo que costó 25 soles', 'Pagué 60 soles por la consulta del veterinario', 'Compré un regalo de cumpleaños por 40 soles', 'Compré un almuerzo que costó 25 soles'",
             },
             "amount": {
                 "type": "number",

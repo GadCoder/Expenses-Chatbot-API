@@ -1,5 +1,6 @@
 from datetime import datetime
-from zoneinfo import ZoneInfo  
+from zoneinfo import ZoneInfo
+
 
 def enrich_answer(function_name: str, answer: dict | None) -> str:
     if not answer:
@@ -65,6 +66,5 @@ def enrich_get_expenses_list(result: dict) -> str:
 
 
 def enrich_welcome_message(user: dict) -> str:
-    user_name = f', {user["user_name"]}' if user["user_name"] else ""
+    user_name = f", {user['user_name']}" if user["user_name"] else ""
     return f'👋 Hola{user_name}! Soy un bot para el registro de gastos personales.\nPuedes empezar diciendo algo como: \n_“Gasté 5 soles en pasajes”_ o _“Compré un pollo a la brasa de 55 soles"_ para registrar un gasto.\nTambién puedes consultar tus gastos diciendo _"Dame los gastos de ayer"_ o "_Dame los gastos de la semana pasada"_'
-

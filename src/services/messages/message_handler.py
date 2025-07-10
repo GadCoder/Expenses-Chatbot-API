@@ -9,7 +9,10 @@ from ..tool_registry import TOOL_REGISTRY
 from ..gemini.gemini_service import GeminiService
 from database.repositories.user import get_user_by_chat_id
 from database.schemas.message_history import MessageHistoryCreate
-from database.repositories.message_history import create_message_history, get_message_history_by_user_id
+from database.repositories.message_history import (
+    create_message_history,
+    get_message_history_by_user_id,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -26,28 +29,34 @@ def process_message(
     create_message_history(
         db=db,
         message_history=MessageHistoryCreate(
-            user_id=user.id, message=message, sender_type="USER" # type: ignore
+            user_id=user.id,
+            message=message,
+            sender_type="USER",  # type: ignore
         ),
     )
 
-    message_history = get_message_history_by_user_id(db=db, user_id=user.id) # type: ignore
-    enriched_prompt = enrich_prompt(db=db, message=message, user_id=user.id, message_history=message_history)  # type: ignore
-    
+    message_history = get_message_history_by_user_id(db=db, user_id=user.id)  # type: ignore
+    enriched_prompt = enrich_prompt(
+        db=db, message=message, user_id=user.id, message_history=message_history
+    )  # type: ignore
+
     result = get_function_to_call(gemini=gemini, prompt=enriched_prompt)
     if result is None:
         logger.warning("Could not determine function to call")
         return None
     function_name, function_to_call, function_args = result
-    function_args.update({"db": db, "user": user}) # type: ignore
+    function_args.update({"db": db, "user": user})  # type: ignore
 
     logger.info(f"Calling function: {function_name}")
-    answer = function_to_call(**function_args) # type: ignore
+    answer = function_to_call(**function_args)  # type: ignore
 
     enriched_answer = enrich_answer(function_name=function_name, answer=answer)
     create_message_history(
         db=db,
         message_history=MessageHistoryCreate(
-            user_id=user.id, message=enriched_answer, sender_type="BOT" # type: ignore
+            user_id=user.id,
+            message=enriched_answer,
+            sender_type="BOT",  # type: ignore
         ),
     )
 
@@ -55,10 +64,8 @@ def process_message(
     return enriched_answer
 
 
-
 def get_function_to_call(
-    gemini: GeminiService, 
-    prompt: str
+    gemini: GeminiService, prompt: str
 ) -> Optional[Tuple[str, Callable, Dict]]:
     function_call = gemini.get_function_call(prompt=prompt)
     if not function_call:

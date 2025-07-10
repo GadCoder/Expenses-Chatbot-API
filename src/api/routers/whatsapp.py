@@ -28,7 +28,9 @@ async def whatsapp_webhook(
     if not message:
         return Response(content="No message received", status_code=400)
     hashed_chat_id = hash_chat_id(chat_id)
-    answer = process_message(chat_id=hashed_chat_id, message=message, db=db, gemini=gemini)
+    answer = process_message(
+        chat_id=hashed_chat_id, message=message, db=db, gemini=gemini
+    )
     if not answer:
         return Response(content="Couldn't process message", status_code=400)
     return {"reply": answer}

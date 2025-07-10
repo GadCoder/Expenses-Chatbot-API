@@ -82,5 +82,6 @@ welcome_message = {
     "parameters": {"type": "object", "properties": {}, "required": []},
 }
 
+
 def get_tools():
     return [register_expense, get_list_of_expenses, welcome_message]

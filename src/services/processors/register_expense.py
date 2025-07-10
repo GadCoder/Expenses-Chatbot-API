@@ -14,7 +14,6 @@ from database.repositories import (
 def register_expense(
     db: Session, description: str, amount: float, category_name: str, user: User
 ) -> dict:
-    print("On register expense")
     category = expense_category_repository.get_expense_category_by_name(
         db=db, name=category_name
     )

@@ -31,6 +31,7 @@ register_expense = {
         "required": ["description", "amount"],
     },
 }
+
 get_list_of_expenses = {
     "name": "get_expenses_list",
     "description": """List the expenses registered by the user.
@@ -66,6 +67,11 @@ get_list_of_expenses = {
     },
 }
 
+welcome_message = {
+    "name": "welcome_message",
+    "description": "Welcomes the user and provides an introduction. This function is triggered whenever the user sends a greeting like 'Hello', 'Hola', or any other variation.",
+    "parameters": {"type": "object", "properties": {}, "required": []},
+}
 
 def get_tools():
-    return [register_expense, get_list_of_expenses]
+    return [register_expense, get_list_of_expenses, welcome_message]

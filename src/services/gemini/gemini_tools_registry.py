@@ -69,7 +69,16 @@ get_list_of_expenses = {
 
 welcome_message = {
     "name": "welcome_message",
-    "description": "Welcomes the user and provides an introduction. This function is triggered whenever the user sends a greeting like 'Hello', 'Hola', or any other variation.",
+    "description": """Welcomes the user and provides an introduction. 
+        This function is triggered whenever the user sends a greeting like:
+            - 'Hello'
+            - 'Hola'
+            - 'Holi'
+            - 'Hola causa'
+            - 'Buenos días'
+            - 'Buenas tardes'
+            - 'Oe causa'
+        Or any other variation.""",
     "parameters": {"type": "object", "properties": {}, "required": []},
 }
 

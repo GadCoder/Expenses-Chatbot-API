@@ -13,4 +13,4 @@ def create_message_history(db: Session, message_history: MessageHistoryCreate) -
 
 
 def get_message_history_by_user_id(db: Session, user_id: int) -> list[MessageHistory]:
-    return db.query(MessageHistory).filter(MessageHistory.user_id == user_id).order_by(MessageHistory.created_at).all()
+    return db.query(MessageHistory).filter(MessageHistory.user_id == user_id).order_by(MessageHistory.created_at).limit(10).all()

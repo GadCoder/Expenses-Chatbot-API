@@ -9,7 +9,7 @@ from database.repositories.expense_category import get_user_expense_categories
 def enrich_prompt(db: Session, message: str, user_id: int, message_history: list[MessageHistory]) -> str:
     history_str = ""
     if message_history:
-        history_str = "MESSAGE HISTORY: This are the last 10 messages from the user in ascendant time order\n"
+        history_str = "MESSAGE HISTORY: This are the last 10 messages from oldest no newer\n"
         for msg in message_history:
             history_str += f"- {msg.sender_type}: {msg.message}\n"
         history_str = clean_history_text(history_text=history_str)

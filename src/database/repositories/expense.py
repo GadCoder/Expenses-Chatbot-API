@@ -45,7 +45,7 @@ def get_user_expenses(
     return (
         db.query(Expense)
         .filter(*filters)
-        .order_by(desc(Expense.timestamp))
+        .order_by(Expense.timestamp)
         .offset(skip)
         .limit(limit)
         .all()

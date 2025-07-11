@@ -41,5 +41,5 @@ jobs:
           cd ${{ secrets.PROJECT_PATH }}
           git pull origin main
           docker-compose down
-          ./run.sh
+          ./run.sh prod
           docker image prune -f

@@ -2,12 +2,21 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, development ]
 
 jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: "test_key"
+      API_KEY: "test_key"
+      DB_ENGINE: "sqlite"
+      DB_USER: "test"
+      DB_PASSWORD: "test"
+      DB_HOST: "localhost"
+      DB_PORT: "5432"
+      DB_NAME: "testdb"
     steps:
     - name: Check out code
       uses: actions/checkout@v4
@@ -15,7 +24,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11' # Or your project's python version
+        python-version: '3.12' # Or your project's python version
 
     - name: Install dependencies
       run: |
@@ -28,7 +37,8 @@ jobs:
 
   deploy:
     name: Deploy to VPS
-    needs: test # This job only runs if the 'test' job succeeds
+    needs: test 
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to server

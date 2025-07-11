@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from database.repositories import expense as expense_repository
 from database.schemas.expense import ExpenseCreate
@@ -42,5 +43,8 @@ def test_get_user_expenses(
     )
     expense_repository.create_expense(db_session, expense_data2, user_factory.id)  # type: ignore
 
-    expenses = expense_repository.get_user_expenses(db_session, user_factory.id)  # type: ignore
+    start_date = datetime.now() - timedelta(days=1)
+    expenses = expense_repository.get_user_expenses(
+        db_session, user_factory.id, start_date=start_date  # type: ignore
+    )
     assert len(expenses) == 2

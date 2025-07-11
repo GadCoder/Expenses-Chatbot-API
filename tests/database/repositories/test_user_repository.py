@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
+
+from core.security import hash_chat_id
 from database.repositories import user as user_repository
 from database.schemas.user import UserCreate, UserUpdate
-from services.security.security import hash_chat_id
 
 
 def test_create_user(db_session: Session):

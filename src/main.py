@@ -5,7 +5,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from database import models
 from api.base import api_router
 from database.database import engine, Base
 from src.core.logging_config import setup_logging

@@ -52,7 +52,7 @@ def enrich_get_expenses_list(result: ExpensesListResult) -> str:
     category_name = result.get("category_name", "")
 
     category_text = (
-        f" para la categoría de *{category_name.capitalize()}*" if category_name else ""
+        f" para la categoría de {category_name.capitalize()}" if category_name else ""
     )
 
     if not expenses:

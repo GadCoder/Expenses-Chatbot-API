@@ -8,9 +8,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      ENVIRONMENT: ${ENVIRONMENT}
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
       API_KEY: ${API_KEY}
+      ENVIRONMENT: ${ENVIRONMENT}
+      LLM_MODEL: ${LLM_MODEL}
+      LLM_API_KEY: ${LLM_API_KEY}
+      LLM_PROVIDER: ${LLM_PROVIDER}
       DB_ENGINE: ${DB_ENGINE}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}

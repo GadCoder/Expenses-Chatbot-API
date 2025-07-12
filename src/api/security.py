@@ -6,7 +6,7 @@ bearer_scheme = HTTPBearer()
 
 
 def get_api_key(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
-    if credentials.scheme != "Bearer" or credentials.credentials != settings.api_key:
+    if credentials.scheme != "Bearer" or credentials.credentials != settings.API_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials",

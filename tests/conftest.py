@@ -1,6 +1,7 @@
 import os
 import sys
 import pytest
+from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -19,13 +20,13 @@ from src.database.repositories import (
 
 
 @pytest.fixture(scope="function")
-def db_session() -> Session:  # type: ignore
+def db_session() -> Generator[Session, None, None]:
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(engine)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     session = SessionLocal()
     try:
-        yield session  # type: ignore
+        yield session
     finally:
         session.close()
         Base.metadata.drop_all(engine)
@@ -43,8 +44,9 @@ def expense_category_factory(
     db_session: Session, user_factory: models.User
 ) -> models.ExpenseCategory:
     category_data = ExpenseCategoryCreate(name="Food")
+    assert user_factory.id is not None
     return expense_category_repository.create_expense_category(
         db_session,
         category_data,
-        user_factory.id,  # type: ignore
+        user_factory.id,
     )

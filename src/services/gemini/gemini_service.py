@@ -1,4 +1,5 @@
 import logging
+from functools import lru_cache
 
 from google.genai import types, Client
 
@@ -30,8 +31,6 @@ class GeminiService:
         return (function_call.name, function_call.args)
 
 
-gemini_service = GeminiService()
-
-
+@lru_cache
 def get_gemini_service() -> GeminiService:
-    return gemini_service
+    return GeminiService()

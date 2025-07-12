@@ -30,7 +30,7 @@ def get_expenses_list(
         category_id=category_id,  # type: ignore
     )
 
-    result = {"delta_time": delta_time, "expenses": []}
+    result = {"delta_time": delta_time, "expenses": [], "category_name": category_name}
     for expense in expenses:
         expense_data = expense.__dict__
         expense_data["category_name"] = expense.category.name

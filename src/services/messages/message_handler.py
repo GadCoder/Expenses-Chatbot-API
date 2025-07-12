@@ -14,6 +14,7 @@ from database.repositories.message_history import (
     get_message_history_by_user_id,
 )
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,6 +45,7 @@ def process_message(
     if result is None:
         logger.warning("Could not determine function to call")
         return None
+
     function_name, function_to_call, function_args = result
     function_args.update({"db": db, "user": user})  # type: ignore
 

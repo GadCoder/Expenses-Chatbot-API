@@ -13,8 +13,11 @@ def get_env_file():
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=get_env_file(), extra="ignore")
 
-    api_key: Optional[str] = None
-    gemini_api_key: Optional[str] = None
+    API_KEY: Optional[str] = None
+
+    LLM_MODEL: Optional[str] = None
+    LLM_PROVIDER: Optional[str] = None
+    LLM_API_KEY: Optional[str] = None
 
     DB_ENGINE: Optional[str] = None
     DB_USER: Optional[str] = None
@@ -31,7 +34,7 @@ class Settings(BaseSettings):
     def database_url(self) -> str:
         if self.DB_ENGINE == "sqlite":
             return f"sqlite:///./{self.DB_NAME}.db"
-        
+
         return f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 

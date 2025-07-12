@@ -3,10 +3,10 @@ from typing import Callable, Dict, Optional, Tuple
 
 from sqlalchemy.orm import Session
 
+from ..llm import get_llm_service
 from .enrich_prompt import enrich_prompt
 from .enrich_answer import enrich_answer
 from ..tool_registry import TOOL_REGISTRY
-from ..gemini.gemini_service import GeminiService
 from database.repositories.user import get_user_by_chat_id
 from database.schemas.message_history import MessageHistoryCreate
 from database.repositories.message_history import (
@@ -22,7 +22,6 @@ def process_message(
     db: Session,
     chat_id: str,
     message: str,
-    gemini: GeminiService,
 ):
     logger.info(f"Processing message from chat_id: {chat_id}")
     user = get_user_by_chat_id(db=db, chat_id=chat_id)
@@ -41,7 +40,7 @@ def process_message(
         db=db, message=message, user_id=user.id, message_history=message_history
     )  # type: ignore
 
-    result = get_function_to_call(gemini=gemini, prompt=enriched_prompt)
+    result = get_function_to_call(prompt=enriched_prompt)
     if result is None:
         logger.warning("Could not determine function to call")
         return None
@@ -66,10 +65,9 @@ def process_message(
     return enriched_answer
 
 
-def get_function_to_call(
-    gemini: GeminiService, prompt: str
-) -> Optional[Tuple[str, Callable, Dict]]:
-    function_call = gemini.get_function_call(prompt=prompt)
+def get_function_to_call(prompt: str) -> Optional[Tuple[str, Callable, Dict]]:
+    llm_service = get_llm_service()
+    function_call = llm_service.get_function_call(prompt=prompt)
     if not function_call:
         return None
 

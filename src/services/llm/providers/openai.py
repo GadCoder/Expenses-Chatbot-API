@@ -10,7 +10,7 @@ from services.llm.tools_registry import get_tools
 logger = logging.getLogger(__name__)
 
 
-class GeminiService(BaseLLMService):
+class OpenAIService(BaseLLMService):
     def __init__(self):
         logger.info("Initializing OpenAI Service...")
         self.client: OpenAI = OpenAI(api_key=settings.LLM_API_KEY)
@@ -31,5 +31,5 @@ class GeminiService(BaseLLMService):
 
 
 @lru_cache
-def get_gemini_service() -> GeminiService:
-    return GeminiService()
+def get_openai_service() -> OpenAIService:
+    return OpenAIService()

@@ -20,7 +20,7 @@ class GeminiService(BaseLLMService):
     def get_function_call(self, prompt: str) -> tuple | None:
         logger.info(f"Sending prompt to Gemini: {prompt}")
         response = self.client.models.generate_content(
-            model=settings.LLM_MODEL,
+            model=settings.LLM_MODEL,  # type: ignore
             contents=prompt,
             config=self.config,
         )

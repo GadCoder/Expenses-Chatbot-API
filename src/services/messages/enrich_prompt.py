@@ -154,7 +154,7 @@ def create_user_categories_text(user_categories: list) -> str:
         """
     else:
         categories_str = ", ".join([str(c.name) for c in user_categories])
-        content = f"This are the existing expense categories registered for this user:[{categories_str}]"
+        content = f"These are the existing expense categories registered for this user:[{categories_str}]"
     return content
 
 

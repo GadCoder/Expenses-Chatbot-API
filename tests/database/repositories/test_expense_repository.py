@@ -83,7 +83,7 @@ def test_get_user_expenses_with_category_filter(
         db_session,
         user_factory.id,
         start_date=start_date,
-        category_id=expense_category_factory.id,
+        category_ids=[expense_category_factory.id],
     )
     assert len(expenses) == 1
     assert expenses[0].description == "Lunch"

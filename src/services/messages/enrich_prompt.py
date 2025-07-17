@@ -74,7 +74,7 @@ def get_last_context(message_history: list[MessageHistory]) -> str:
         return "No previous bot context available"
 
     context_parts = []
-    if last_bot_message.categories:
+    if last_bot_message.categories is not None:
         categories = last_bot_message.categories.strip()
         context_parts.append(f"Previous category(ies): {categories}")
     else:

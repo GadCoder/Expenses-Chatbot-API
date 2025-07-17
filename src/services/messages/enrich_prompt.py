@@ -3,7 +3,7 @@ import textwrap
 
 from sqlalchemy.orm import Session
 
-from database.schemas.message_history import MessageHistory
+from database.models.message_history import MessageHistory
 from database.repositories.expense_category import get_user_expense_categories
 from ..llm.tools_registry import get_tools
 

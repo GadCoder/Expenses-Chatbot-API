@@ -22,7 +22,7 @@ def create_message_history(
         user_id=user_id,
         message=message,
         sender_type=sender_type,
-        categories="/ ".join(categories) if categories else "",
+        categories=", ".join(categories) if categories else "",
         delta_time=delta_time,
     )
     db.add(db_message_history)

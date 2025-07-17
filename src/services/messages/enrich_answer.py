@@ -35,7 +35,7 @@ def format_expense_data(expense_data: ExpenseData) -> str:
         f"\n*{expense_data['description'].capitalize()}* \n"
         f"💰: S/.{expense_data['amount']}\n"
         f"🏷️ Categoría: {expense_data['category_name']} \n"
-        f"🗓️: {formatted_date}\n\n"
+        f"🗓️: {formatted_date}\n"
     )
 
 
@@ -73,7 +73,7 @@ def enrich_get_expenses_list(result: ExpensesListResult) -> str:
 
     lines = [base_message]
     for expense in expenses:
-        lines.append(format_expense_data(expense).strip())
+        lines.append(format_expense_data(expense))
 
     return "\n".join(lines)
 

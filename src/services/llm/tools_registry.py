@@ -36,8 +36,8 @@ get_list_of_expenses = {
     "name": "get_expenses_list",
     "description": """List the expenses registered by the user.
         The prompt may include:
+            - One or more expense categories (e.g., food, transport). This category should be mapped to the user's known or personalized expense categories.
             - A delta time expression to specify the time range for the expenses (e.g., “últimos X días”, “último mes”, “últimas 2 semanas”).
-            - An expense category (e.g., food, transport). This category should be mapped to the user's known or personalized expense categories.
         Delta time interpretation rules:
             - 'Ayer' -> 1 day ago
             - 'Hoy' -> from today, meaning 0 days ago
@@ -58,9 +58,10 @@ get_list_of_expenses = {
                 "type": "number",
                 "description": "Number of past days to use as a delta for the expenses registry list. For example, 30, 1, etc",
             },
-            "category_name": {
-                "type": "string",
-                "description": "Category of the expense. E.g, 'comida', 'entretenimiento', 'gastos fijos'",
+            "categories": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "List of categories for the expenses. Could be one or more. E.g, 'comida', 'entretenimiento', 'gastos fijos', 'comida y transporte'",
             },
         },
         "required": ["delta_time"],

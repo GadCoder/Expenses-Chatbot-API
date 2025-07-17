@@ -19,6 +19,8 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 export ENV_FILE="$ENV_FILE"
+echo "Getting running containers down"
+docker compose down
 
 echo "Running Docker Compose with $ENV_FILE"
 docker compose --env-file "$ENV_FILE" up --build -d

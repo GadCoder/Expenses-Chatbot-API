@@ -22,14 +22,11 @@ class ExpenseData(TypedDict):
 class ExpensesListResult(TypedDict):
     delta_time: int
     expenses: list[ExpenseData]
-    category_name: str
+    categories: list[str]
 
 
 class UserData(TypedDict):
     user_name: str
-
-
-# --- Formatter Functions ---
 
 
 def format_expense_data(expense_data: ExpenseData) -> str:
@@ -49,11 +46,15 @@ def enrich_register_expense(expense_data: ExpenseData) -> str:
 def enrich_get_expenses_list(result: ExpensesListResult) -> str:
     delta_days = result.get("delta_time", 0)
     expenses = result.get("expenses", [])
-    category_name = result.get("category_name", "")
+    categories = result.get("categories", [])
 
-    category_text = (
-        f" para la categoría de {category_name.capitalize()}" if category_name else ""
-    )
+    if not categories:
+        category_text = ""
+    elif len(categories) == 1:
+        category_text = f"para la categoría de {categories[0].capitalize()}"
+    else:
+        capitalized_categories = [category.capitalize() for category in categories]
+        category_text = f"para las categorías de {'/ '.join(capitalized_categories)}"
 
     if not expenses:
         return (
@@ -62,12 +63,12 @@ def enrich_get_expenses_list(result: ExpensesListResult) -> str:
         )
 
     if delta_days == 0:
-        base_message = f"*Gastos registrados hoy{category_text}:*\n"
+        base_message = f"*Gastos registrados hoy {category_text}:*\n"
     elif delta_days == 1:
-        base_message = f"*Gastos registrados ayer{category_text}:*\n"
+        base_message = f"*Gastos registrados ayer {category_text}:*\n"
     else:
         base_message = (
-            f"*Gastos registrados en los últimos {delta_days} días{category_text}:*\n"
+            f"*Gastos registrados en los últimos {delta_days} días {category_text}:*\n"
         )
 
     lines = [base_message]
@@ -82,8 +83,6 @@ def enrich_welcome_message(user: UserData) -> str:
     return f"👋 Hola{user_name}! Soy un bot para el registro de gastos personales.\n{INSTRUCTION_MESSAGE}"
 
 
-# --- Dispatcher ---
-
 ENRICH_FUNCTIONS: dict[str, Callable[[Any], str]] = {
     "register_expense": enrich_register_expense,
     "get_expenses_list": enrich_get_expenses_list,
@@ -94,10 +93,7 @@ ENRICH_FUNCTIONS: dict[str, Callable[[Any], str]] = {
 def enrich_answer(function_name: str, answer: dict | None) -> str:
     if not answer:
         return FALLBACK_MESSAGE
-
     enrich_function = ENRICH_FUNCTIONS.get(function_name)
-
     if not enrich_function:
         return FALLBACK_MESSAGE
-
     return enrich_function(answer)

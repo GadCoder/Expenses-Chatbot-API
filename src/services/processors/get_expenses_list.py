@@ -13,7 +13,16 @@ from database.repositories import (
 def get_expenses_list(
     db: Session, delta_time: int, user: User, categories: list[str] | None = None
 ) -> dict:
-    start_date = datetime.now(ZoneInfo("America/Lima")) - timedelta(days=delta_time)
+    lima_tz = ZoneInfo("America/Lima")
+    now = datetime.now(lima_tz)
+
+    if delta_time == 0:
+        # For "today", start from beginning of the current day
+        start_date = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    else:
+        # For other days, go back the specified number of days from now
+        start_date = now - timedelta(days=delta_time)
+
     start_date = start_date.astimezone(ZoneInfo("UTC"))
     category_ids = []
     if categories:

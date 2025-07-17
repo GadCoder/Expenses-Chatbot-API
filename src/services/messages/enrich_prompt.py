@@ -57,7 +57,7 @@ def create_message_history_str(message_history: list[MessageHistory]) -> str:
     if not message_history:
         return ""
     history_str = ""
-    history_str = "This are the last 10 messages from oldest no newer\n"
+    history_str = "These are the last 10 messages from oldest to newest\n"
     for index, msg in enumerate(message_history):
         history_str += f"{index + 1}. {msg.sender_type}: {msg.message}\n"
     history_str = clean_history_text(history_text=history_str)

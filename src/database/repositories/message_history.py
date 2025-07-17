@@ -14,7 +14,7 @@ def create_message_history(
     user_id: int,
     message: str,
     sender_type: str,
-    categories: list[str] | None = [],
+    categories: list[str] | None = None,
     delta_time: int | None = None,
 ) -> MessageHistory:
     logger.debug(f"Creating message history for user_id: {user_id}")
@@ -22,7 +22,7 @@ def create_message_history(
         user_id=user_id,
         message=message,
         sender_type=sender_type,
-        categories="/ ".join(categories) if categories else "",
+        categories=", ".join(categories) if categories else "",
         delta_time=delta_time,
     )
     db.add(db_message_history)

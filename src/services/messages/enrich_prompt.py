@@ -3,7 +3,7 @@ import textwrap
 
 from sqlalchemy.orm import Session
 
-from database.schemas.message_history import MessageHistory
+from database.models.message_history import MessageHistory
 from database.repositories.expense_category import get_user_expense_categories
 from ..llm.tools_registry import get_tools
 
@@ -57,7 +57,7 @@ def create_message_history_str(message_history: list[MessageHistory]) -> str:
     if not message_history:
         return ""
     history_str = ""
-    history_str = "This are the last 10 messages from oldest no newer\n"
+    history_str = "These are the last 10 messages from oldest to newest\n"
     for index, msg in enumerate(message_history):
         history_str += f"{index + 1}. {msg.sender_type}: {msg.message}\n"
     history_str = clean_history_text(history_text=history_str)
@@ -154,7 +154,7 @@ def create_user_categories_text(user_categories: list) -> str:
         """
     else:
         categories_str = ", ".join([str(c.name) for c in user_categories])
-        content = f"This are the existing expense categories registered for this user:[{categories_str}]"
+        content = f"These are the existing expense categories registered for this user:[{categories_str}]"
     return content
 
 

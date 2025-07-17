@@ -15,14 +15,18 @@ def enrich_prompt(
     user_categories_text = create_user_categories_text(user_categories=user_categories)
 
     enriched_prompt = f"""
-        This is the main content of this request: \n
-            - {message}\n
-        Use the main content of the current request to determine which function to call.
-        If the request is ambiguous or lacks sufficient detail, refer to the message history provided below to add context.
-        For example, if the current request is “Ahora de ropa” and the previous message was “Dame el listado de gastos de comida”, it's likely the user now wants the list of expenses for clothes.
+        You are an assistant helping users track personal expenses via WhatsApp.
+        Your goal is to extract the user’s intent and arguments (category, time range, etc.) based on their current message.
+        If the current message is ambiguous or lacks detail, use recent conversation history to infer what the user means.
         You can also extract details like time period from the previous messages. For instance, if the earlier request specified a time frame (e.g., “de los últimos 7 días”), and the new request omits it, you may use the prior time frame to fill in the gap.
-        This is just one example of how message history can help improve understanding.
-        Important: Always prioritize the main content of the current request. Use the message history only when necessary to clarify or supplement the intent.
+        Examples:
+            - If the user says “Ahora de transporte” after “Muéstrame los gastos de comida de los últimos 7 días”, infer they now want “gastos de transporte de los últimos 7 días”.
+            - If the time range was “de este mes” and now they say “los de entretenimiento”, assume the same time range.
+            - If the current request is “Ahora de ropa” and the previous message was “Dame el listado de gastos de comida”, it's likely the user now wants the list of expenses for clothes.
+        Use the content of the current message to determine which function to call.
+        Important: Always prioritize the content of the current message. Use the message history only when necessary to clarify or supplement the intent.
+        This is the current message: \n
+            {message}\n
         \n{history_str}
         \n{user_categories_text}
         """

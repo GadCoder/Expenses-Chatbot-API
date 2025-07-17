@@ -31,14 +31,14 @@ def process_message(
         message_history=MessageHistoryCreate(
             user_id=user.id,
             message=message,
-            sender_type="USER",  # type: ignore
+            sender_type="USER",
         ),
     )
 
-    message_history = get_message_history_by_user_id(db=db, user_id=user.id)  # type: ignore
+    message_history = get_message_history_by_user_id(db=db, user_id=user.id)
     enriched_prompt = enrich_prompt(
         db=db, message=message, user_id=user.id, message_history=message_history
-    )  # type: ignore
+    )
 
     result = get_function_to_call(prompt=enriched_prompt)
     if result is None:
@@ -46,10 +46,10 @@ def process_message(
         return None
 
     function_name, function_to_call, function_args = result
-    function_args.update({"db": db, "user": user})  # type: ignore
+    function_args.update({"db": db, "user": user})
 
     logger.info(f"Calling function: {function_name}")
-    answer = function_to_call(**function_args)  # type: ignore
+    answer = function_to_call(**function_args)
 
     enriched_answer = enrich_answer(function_name=function_name, answer=answer)
     create_message_history(
@@ -57,7 +57,7 @@ def process_message(
         message_history=MessageHistoryCreate(
             user_id=user.id,
             message=enriched_answer,
-            sender_type="BOT",  # type: ignore
+            sender_type="BOT",
         ),
     )
 

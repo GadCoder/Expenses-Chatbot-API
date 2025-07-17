@@ -1,14 +1,17 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class MessageHistoryBase(BaseModel):
+    user_id: int
     message: str
     sender_type: str
+    categories: str | None = Field(default=None)
+    delta_time: int | None = Field(default=None)
 
 
 class MessageHistoryCreate(MessageHistoryBase):
-    user_id: int
+    pass
 
 
 class MessageHistory(MessageHistoryBase):

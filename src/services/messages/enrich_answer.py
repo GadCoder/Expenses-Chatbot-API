@@ -15,7 +15,7 @@ INSTRUCTION_MESSAGE = (
 class ExpenseData(TypedDict):
     description: str
     amount: float
-    category: str
+    category_name: str
     timestamp: Any
 
 
@@ -34,7 +34,7 @@ def format_expense_data(expense_data: ExpenseData) -> str:
     return (
         f"\n*{expense_data['description'].capitalize()}* \n"
         f"💰: S/.{expense_data['amount']}\n"
-        f"🏷️ Categoría: {expense_data['category']} \n"
+        f"🏷️ Categoría: {expense_data['category_name']} \n"
         f"🗓️: {formatted_date}\n\n"
     )
 
@@ -93,10 +93,7 @@ ENRICH_FUNCTIONS: dict[str, Callable[[Any], str]] = {
 def enrich_answer(function_name: str, answer: dict | None) -> str:
     if not answer:
         return FALLBACK_MESSAGE
-
     enrich_function = ENRICH_FUNCTIONS.get(function_name)
-
     if not enrich_function:
         return FALLBACK_MESSAGE
-
     return enrich_function(answer)

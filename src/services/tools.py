@@ -24,10 +24,10 @@ def register_expense(
 
 @register_tool
 def get_expenses_list(
-    db: Session, delta_time: int, user: User, category_name: str | None = None
-):
+    db: Session, delta_time: int, user: User, categories: list[str] | None = None
+) -> dict:
     return _get_expenses_list(
-        db=db, delta_time=delta_time, user=user, category_name=category_name
+        db=db, delta_time=delta_time, user=user, categories=categories
     )
 
 

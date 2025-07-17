@@ -12,6 +12,8 @@ class MessageHistory(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     message = Column(String)
     sender_type = Column(String)
+    categories = Column(String, nullable=True)
+    delta_time = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now())
 
     user = relationship("User")

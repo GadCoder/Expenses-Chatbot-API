@@ -23,7 +23,7 @@ def get_user_expenses(
     db: Session,
     user_id: int,
     start_date: datetime,
-    category_id: int | None = None,
+    category_ids: list[int] | None = None,
     skip: int = 0,
     limit: int = 100,
 ) -> list[Expense]:
@@ -32,8 +32,8 @@ def get_user_expenses(
         Expense.timestamp >= start_date,
     ]
 
-    if category_id is not None:
-        filters.append(Expense.category_id == category_id)
+    if category_ids:
+        filters.append(Expense.category_id.in_(category_ids))
 
     return (
         db.query(Expense)

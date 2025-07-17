@@ -11,26 +11,27 @@ from database.repositories import (
 
 
 def get_expenses_list(
-    db: Session, delta_time: int, user: User, category_name: str | None = None
+    db: Session, delta_time: int, user: User, categories: list[str] | None = None
 ) -> dict:
     start_date = datetime.now(ZoneInfo("America/Lima")) - timedelta(days=delta_time)
     start_date = start_date.astimezone(ZoneInfo("UTC"))
-    category_id = None
-    if category_name:
-        category = expense_category_repository.get_expense_category_by_name(
-            db=db, name=category_name
-        )
-        if category:
-            category_id = category.id
+    category_ids = []
+    if categories:
+        for category_name in categories:
+            category = expense_category_repository.get_expense_category_by_name(
+                db=db, name=category_name
+            )
+            if category:
+                category_ids.append(category.id)
 
     expenses = expense_repository.get_user_expenses(
         db=db,
         user_id=user.id,  # type: ignore
         start_date=start_date,
-        category_id=category_id,  # type: ignore
+        category_ids=category_ids,  # type: ignore
     )
 
-    result = {"delta_time": delta_time, "expenses": [], "category_name": category_name}
+    result = {"delta_time": delta_time, "expenses": [], "categories": categories}
     for expense in expenses:
         expense_data = expense.__dict__
         expense_data["category_name"] = expense.category.name

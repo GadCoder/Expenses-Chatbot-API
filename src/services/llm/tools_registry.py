@@ -23,7 +23,7 @@ register_expense = {
                 "type": "number",
                 "description": "Amount of the expense, e.g 34.05, 110, 2000",
             },
-            "category": {
+            "category_name": {
                 "type": "string",
                 "description": "Optional category for the expense. If not provided, the system will infer or generate one E.g, 'comida', 'entretenimiento', 'gastos fijos'",
             },

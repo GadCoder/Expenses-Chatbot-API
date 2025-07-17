@@ -26,14 +26,7 @@ def process_message(
     logger.info(f"Processing message from chat_id: {chat_id}")
     user = get_user_by_chat_id(db=db, chat_id=chat_id)
 
-    create_message_history(
-        db=db,
-        message_history=MessageHistoryCreate(
-            user_id=user.id,
-            message=message,
-            sender_type="USER",
-        ),
-    )
+    create_message_history(db=db, user_id=user.id, message=message, sender_type="USER")
 
     message_history = get_message_history_by_user_id(db=db, user_id=user.id)
     enriched_prompt = enrich_prompt(
@@ -46,19 +39,19 @@ def process_message(
         return None
 
     function_name, function_to_call, function_args = result
+    logger.info(f"Calling function: {function_name} with args {function_args}")
     function_args.update({"db": db, "user": user})
 
-    logger.info(f"Calling function: {function_name}")
     answer = function_to_call(**function_args)
 
     enriched_answer = enrich_answer(function_name=function_name, answer=answer)
     create_message_history(
         db=db,
-        message_history=MessageHistoryCreate(
-            user_id=user.id,
-            message=enriched_answer,
-            sender_type="BOT",
-        ),
+        user_id=user.id,
+        message=enriched_answer,
+        sender_type="BOT",
+        categories=function_args.get("categories", []),
+        delta_time=function_args.get("delta_time", None),
     )
 
     logger.info(f"Sending answer to chat_id: {chat_id}")

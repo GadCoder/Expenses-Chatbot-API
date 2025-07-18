@@ -2,13 +2,25 @@ from typing import Any, Callable, TypedDict
 
 from src.core.utils import format_date
 
-FALLBACK_MESSAGE = "No pude procesar tu solicitud :("
-EXPENSE_EXAMPLES = (
+REGISTER_EXPENSE_EXAMPLES = (
     "_“Gasté 5 soles en pasajes”_ o _“Compré un pollo a la brasa de 55 soles”_"
 )
+
+GET_EXPENSES_EXAMPLES = ' _"Dame los gastos de ayer"_ o "_Muéstrame mis gastos de transporte de los últimos 7 días"_'
 INSTRUCTION_MESSAGE = (
-    'Puedes empezar diciendo algo como: \n_“Gasté 5 soles en pasajes”_ o _“Compré un pollo a la brasa de 55 soles"_ para registrar un gasto.\n'
-    'También puedes consultar tus gastos diciendo _"Dame los gastos de ayer"_ o "_Dame los gastos de la semana pasada"_'
+    "Puedes empezar diciendo algo como:\n"
+    f"{REGISTER_EXPENSE_EXAMPLES}\n"
+    "También puedes consultar tus gastos diciendo: \n"
+    f"{GET_EXPENSES_EXAMPLES}\n"
+)
+
+FALLBACK_MESSAGE = (
+    "No pude procesar tu solicitud con la información que me diste :( "
+    "Por favor, sé un poco más específico para que pueda comprenderte. "
+    "Puedes decirme cosas como:\n"
+    f"{REGISTER_EXPENSE_EXAMPLES}"
+    "También puedes consultar tus gastos diciendo: \n"
+    f"{GET_EXPENSES_EXAMPLES}\n"
 )
 
 
@@ -59,7 +71,7 @@ def enrich_get_expenses_list(result: ExpensesListResult) -> str:
     if not expenses:
         return (
             f"💸 Aún no tienes gastos registrados{category_text}.\n"
-            f"Puedes empezar diciendo algo como:\n{EXPENSE_EXAMPLES}"
+            f"Puedes empezar diciendo algo como:\n{REGISTER_EXPENSE_EXAMPLES}"
         )
 
     if delta_days == 0:

@@ -10,7 +10,7 @@ This project is a FastAPI-based chatbot API designed to help users manage their 
 - **Secure:** Uses API key authentication and hashes user chat IDs.
 - **Containerized:** Can be run using Docker and Docker Compose.
 
-## Getting Started
+## Getting Started}
 
 ### Prerequisites
 
@@ -44,12 +44,13 @@ This project is a FastAPI-based chatbot API designed to help users manage their 
 3.  **Set up the environment variables:**
     -   Create two environment files: `.env.dev` for development and `.env.prod` for production. These files should contain the following variables:
         ```
-        ENVIRONMENT=dev # or prod
+        ENVIRONMENT=dev/prod
 
-        GEMINI_API_KEY=your_gemini_api_key
-        API_KEY=your_api_key
+        LLM_PROVIDER=gemini/openai
+        LLM_MODEL=your_llm_model
+        LLM_API_KEYyour_llm_api_key
 
-        DB_ENGINE=postgresql
+        DB_ENGINE=postgresql # or sqlite for development
         DB_USER=your_db_user
         DB_PASSWORD=your_db_password
         DB_HOST=your_db_host
@@ -98,15 +99,6 @@ This project is a FastAPI-based chatbot API designed to help users manage their 
     ```json
     {
       "reply": "chatbot_response"
-    }
-    ```
-
-- **`GET /health`**:
-  - A health check endpoint.
-  - **Response:**
-    ```json
-    {
-      "status": "ok"
     }
     ```
 

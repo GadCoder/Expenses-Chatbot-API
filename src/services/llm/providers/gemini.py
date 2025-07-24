@@ -14,17 +14,17 @@ class GeminiService(BaseLLMService):
     def __init__(self):
         logger.info("Initializing Gemini Service...")
         self.client: Client = Client(api_key=settings.LLM_API_KEY)
-        tools = types.Tool(function_declarations=get_tools())  # type: ignore
-        self.config = types.GenerateContentConfig(tools=[tools])  # type: ignore
+        tools = types.Tool(function_declarations=get_tools())
+        self.config = types.GenerateContentConfig(tools=[tools])
 
     def get_function_call(self, prompt: str) -> tuple | None:
         logger.info(f"Sending prompt to Gemini: {prompt}")
         response = self.client.models.generate_content(
-            model=settings.LLM_MODEL,  # type: ignore
+            model=settings.LLM_MODEL,
             contents=prompt,
             config=self.config,
         )
-        function_call = response.candidates[0].content.parts[0].function_call  # type: ignore
+        function_call = response.candidates[0].content.parts[0].function_call
         if not function_call:
             logger.warning("No function call returned from Gemini")
             return None

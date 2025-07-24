@@ -35,9 +35,9 @@ def get_expenses_list(
 
     expenses = expense_repository.get_user_expenses(
         db=db,
-        user_id=user.id,  # type: ignore
+        user_id=user.id,
         start_date=start_date,
-        category_ids=category_ids,  # type: ignore
+        category_ids=category_ids,
     )
 
     result = {"delta_time": delta_time, "expenses": [], "categories": categories}

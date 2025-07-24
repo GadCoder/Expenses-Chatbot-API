@@ -11,7 +11,12 @@ from .processors import (
 
 @register_tool
 def register_expense(
-    db: Session, description: str, amount: float, category_name: str, user: User
+    db: Session,
+    description: str,
+    amount: float,
+    category_name: str,
+    user: User,
+    date: str | None = None,
 ):
     return _register_expense(
         db=db,
@@ -19,6 +24,7 @@ def register_expense(
         amount=amount,
         category_name=category_name,
         user=user,
+        date=date,
     )
 
 

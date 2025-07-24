@@ -7,7 +7,12 @@ template = {
 register_expense = {
     "name": "register_expense",
     "description": """
-        Register an expense given a description, amount, and category.
+        Register an expense given a description, amount, expense category, and optionally, a date
+        - The date is optional and can be expressed in various formats. For example:
+            - A specific date like "12 de julio"
+            - A relative expression like "yesterday" or "last Monday"
+        - The current datetime will be provided, so you can resolve relative dates accordingly.
+        - Use DD/MM/YY or DD/MM/YYYY format for the date (you can also use dashes: DD-MM-YY or DD-MM-YYYY)
         - If the category is not explicitly provided, choose one that best fits from the list of existing categories.
         -  Careful when choosing the expense category. Take into account the full sentence for it.
         For example, 'Comida para mi mascota' at first could seems like 'food', but is actually 'pet'
@@ -26,6 +31,10 @@ register_expense = {
             "category_name": {
                 "type": "string",
                 "description": "Optional category for the expense. If not provided, the system will infer or generate one E.g, 'comida', 'entretenimiento', 'gastos fijos'",
+            },
+            "date": {
+                "type": "string",
+                "description": "Optional date for the expense. If not provided, the system will use the current date. Use DD/MM/YY or DD/MM/YYYY format. Examples: '22/07/25', '22/07/2025', '22-07-25', '22-07-2025'",
             },
         },
         "required": ["description", "amount"],

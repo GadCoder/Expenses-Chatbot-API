@@ -25,8 +25,8 @@ def test_update_expense_category(
     update_data = ExpenseCategoryUpdate(name="Groceries")
     updated_category = expense_category_repository.update_expense_category(
         db_session,
-        expense_category_factory.id,  # type: ignore
-        update_data,  # type: ignore
+        expense_category_factory.id,
+        update_data,
     )
     assert bool(updated_category.name == "Groceries")
 
@@ -36,11 +36,11 @@ def test_delete_expense_category(
 ):
     deleted_category = expense_category_repository.delete_expense_category(
         db_session,
-        expense_category_factory.id,  # type: ignore
+        expense_category_factory.id,
     )
     assert deleted_category is not None
     retrieved_category = expense_category_repository.get_expense_category(
         db_session,
-        expense_category_factory.id,  # type: ignore
+        expense_category_factory.id,
     )
     assert retrieved_category is None

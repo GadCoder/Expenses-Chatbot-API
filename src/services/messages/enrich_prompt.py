@@ -1,16 +1,19 @@
 import re
 import textwrap
+from datetime import datetime
 
 from sqlalchemy.orm import Session
 
+from core.utils import get_current_time
+from ..llm.tools_registry import get_tools
 from database.models.message_history import MessageHistory
 from database.repositories.expense_category import get_user_expense_categories
-from ..llm.tools_registry import get_tools
 
 
 def enrich_prompt(
     db: Session, message: str, user_id: int, message_history: list[MessageHistory]
 ) -> str:
+    current_time = get_current_time()
     available_tools_text = create_available_tools_text()
     current_known_context = get_last_context(message_history=message_history)
     user_categories = get_user_expense_categories(db=db, user_id=user_id)
@@ -36,6 +39,9 @@ def enrich_prompt(
     - Use only last known context when needed. 
     - Do not fabricate or guess values — only infer based on clear and recent context.
     - If no function should be called, do not return a function call.
+
+    **Current time in YY-MM-DD format:**
+    {current_time}
 
     **Conversation history:**
     {history_str}

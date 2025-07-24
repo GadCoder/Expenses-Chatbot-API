@@ -18,16 +18,16 @@ class OpenAIService(BaseLLMService):
     def get_function_call(self, prompt: str) -> tuple | None:
         logger.info(f"Sending prompt to OpenAI: {prompt}")
         response = self.client.responses.create(
-            model=settings.LLM_MODEL,  # type: ignore
+            model=settings.LLM_MODEL,
             input=[{"role": "user", "content": prompt}],
-            tools=get_tools(),  # type: ignore
+            tools=get_tools(),
         )
         function_call = response.output[0]
         if not function_call:
             logger.warning("No function call returned from OpenAI")
             return None
-        logger.info(f"Received function call from OpenAI: {function_call.name}")  # type: ignore
-        return (function_call.name, function_call.arguments)  # type: ignore
+        logger.info(f"Received function call from OpenAI: {function_call.name}")
+        return (function_call.name, function_call.arguments)
 
 
 @lru_cache

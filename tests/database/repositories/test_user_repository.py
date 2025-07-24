@@ -17,8 +17,8 @@ def test_get_user(db_session: Session):
     hashed_chat_id = hash_chat_id("12345")
     user_data = UserCreate(chat_id=hashed_chat_id)
     user = user_repository.create_user(db_session, user_data)
-    retrieved_user = user_repository.get_user(db_session, user.id)  # type: ignore
-    assert retrieved_user.id == user.id  # type: ignore
+    retrieved_user = user_repository.get_user(db_session, user.id)
+    assert retrieved_user.id == user.id
 
 
 def test_update_user(db_session: Session):
@@ -26,15 +26,15 @@ def test_update_user(db_session: Session):
     user_data = UserCreate(chat_id=hashed_chat_id)
     user = user_repository.create_user(db_session, user_data)
     update_data = UserUpdate(chat_id=hashed_chat_id, name="Obi Wan Kenobi")
-    updated_user = user_repository.update_user(db_session, user.id, update_data)  # type: ignore
-    assert updated_user.name == "Obi Wan Kenobi"  # type: ignore
+    updated_user = user_repository.update_user(db_session, user.id, update_data)
+    assert updated_user.name == "Obi Wan Kenobi"
 
 
 def test_delete_user(db_session: Session):
     hashed_chat_id = hash_chat_id("12345")
     user_data = UserCreate(chat_id=hashed_chat_id)
     user = user_repository.create_user(db_session, user_data)
-    deleted_user = user_repository.delete_user(db_session, user.id)  # type: ignore
+    deleted_user = user_repository.delete_user(db_session, user.id)
     assert deleted_user is not None
-    retrieved_user = user_repository.get_user(db_session, user.id)  # type: ignore
+    retrieved_user = user_repository.get_user(db_session, user.id)
     assert retrieved_user is None
